@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
@@ -34,15 +35,41 @@ func main() {
 	}
 
 	for update := range updates {
-		if update.Message == nil { // ignore any non-Message Updates
+		// if update.Message == nil { // ignore any non-Message Updates
+		// 	continue
+		// }
+
+		// if strings.ToLower(update.Message.Command()) == "help" {
+		// 	helpCommand(bot, update.Message)
+		// 	continue
+		// }
+
+		// defaultBehavior(bot, update.Message)
+
+		switch {
+		case update.Message == nil:
 			continue
+		case strings.ToLower(update.Message.Command()) == "help":
+			helpCommand(bot, update.Message)
+			continue
+		default:
+			defaultBehavior(bot, update.Message)
 		}
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "You wrote: "+update.Message.Text)
-		// msg.ReplyToMessageID = update.Message.MessageID
-
-		bot.Send(msg)
 	}
+}
+
+func helpCommand(bot *tgbotapi.BotAPI, inputMsg *tgbotapi.Message) {
+	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "/help - help")
+	bot.Send(msg)
+}
+
+func defaultBehavior(bot *tgbotapi.BotAPI, inputMsg *tgbotapi.Message) {
+	log.Printf("[%s] %s", inputMsg.From.UserName, inputMsg.Text)
+
+	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "You wrote: "+inputMsg.Text)
+	// msg.ReplyToMessageID = update.Message.MessageID
+
+	bot.Send(msg)
+
 }
