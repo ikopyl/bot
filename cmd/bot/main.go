@@ -54,7 +54,8 @@ func main() {
 func helpCommand(bot *tgbotapi.BotAPI, inputMsg *tgbotapi.Message) {
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID,
 		"/help - help\n"+
-			"/list - list products")
+			"/list - list products",
+	)
 	bot.Send(msg)
 }
 
