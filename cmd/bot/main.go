@@ -35,23 +35,14 @@ func main() {
 	}
 
 	for update := range updates {
-		// if update.Message == nil { // ignore any non-Message Updates
-		// 	continue
-		// }
 
-		// if strings.ToLower(update.Message.Command()) == "help" {
-		// 	helpCommand(bot, update.Message)
-		// 	continue
-		// }
-
-		// defaultBehavior(bot, update.Message)
-
-		switch {
-		case update.Message == nil:
+		if update.Message == nil {
 			continue
-		case strings.ToLower(update.Message.Command()) == "help":
+		}
+
+		switch strings.ToLower(update.Message.Command()) {
+		case "help":
 			helpCommand(bot, update.Message)
-			continue
 		default:
 			defaultBehavior(bot, update.Message)
 		}
