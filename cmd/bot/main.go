@@ -35,7 +35,6 @@ func main() {
 	}
 
 	for update := range updates {
-
 		if update.Message == nil {
 			continue
 		}
@@ -43,15 +42,24 @@ func main() {
 		switch strings.ToLower(update.Message.Command()) {
 		case "help":
 			helpCommand(bot, update.Message)
+		case "list":
+			listCommand(bot, update.Message)
 		default:
 			defaultBehavior(bot, update.Message)
 		}
-
 	}
+
 }
 
 func helpCommand(bot *tgbotapi.BotAPI, inputMsg *tgbotapi.Message) {
-	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "/help - help")
+	msg := tgbotapi.NewMessage(inputMsg.Chat.ID,
+		"/help - help\n"+
+			"/list - list products")
+	bot.Send(msg)
+}
+
+func listCommand(bot *tgbotapi.BotAPI, inputMessage *tgbotapi.Message) {
+	msg := tgbotapi.NewMessage(inputMessage.Chat.ID, "TBD")
 	bot.Send(msg)
 }
 
@@ -60,7 +68,6 @@ func defaultBehavior(bot *tgbotapi.BotAPI, inputMsg *tgbotapi.Message) {
 
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "You wrote: "+inputMsg.Text)
 	// msg.ReplyToMessageID = update.Message.MessageID
-
 	bot.Send(msg)
 
 }
