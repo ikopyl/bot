@@ -12,5 +12,4 @@ func (c *Commander) Default(inputMsg *tgbotapi.Message) {
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "You wrote: "+inputMsg.Text)
 	// msg.ReplyToMessageID = update.Message.MessageID
 	c.bot.Send(msg)
-
 }

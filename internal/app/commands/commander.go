@@ -1,11 +1,11 @@
 package commands
 
 import (
+	"strings"
+
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ikopyl/bot/internal/service/product"
 )
-
-var registeredCommands = map[string]func(c *Commander, msg *tgbotapi.Message){}
 
 type Commander struct {
 	bot            *tgbotapi.BotAPI
@@ -25,10 +25,14 @@ func (c *Commander) HandleUpdate(update tgbotapi.Update) {
 		return
 	}
 
-	command, ok := registeredCommands[update.Message.Command()]
-	if ok {
-		command(c, update.Message)
-	} else {
+	switch strings.ToLower(update.Message.Command()) {
+	case "get":
+		c.Get(update.Message)
+	case "help":
+		c.Help(update.Message)
+	case "list":
+		c.List(update.Message)
+	default:
 		c.Default(update.Message)
 	}
 

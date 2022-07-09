@@ -8,7 +8,3 @@ func (c *Commander) Get(inputMsg *tgbotapi.Message) {
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "TBD")
 	c.bot.Send(msg)
 }
-
-func init() {
-	registeredCommands["get"] = (*Commander).Get
-}
