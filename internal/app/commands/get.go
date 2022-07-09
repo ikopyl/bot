@@ -26,5 +26,9 @@ func (c *Commander) Get(inputMsg *tgbotapi.Message) {
 		inputMsg.Chat.ID,
 		product.Title,
 	)
-	c.bot.Send(msg)
+	_, err = c.bot.Send(msg)
+	if err != nil {
+		log.Printf("failed to send a message %v: %s", msg, err)
+	}
+	log.Println("message is sent")
 }

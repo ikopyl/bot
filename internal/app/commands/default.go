@@ -18,7 +18,12 @@ func (c *Commander) Default(inputMsg *tgbotapi.Message) {
 
 	msg := tgbotapi.NewMessage(inputMsg.Chat.ID, "You wrote: "+inputMsg.Text)
 	// msg.ReplyToMessageID = update.Message.MessageID
-	c.bot.Send(msg)
+
+	_, err := c.bot.Send(msg)
+	if err != nil {
+		log.Printf("failed to send a message %v: %s", msg, err)
+	}
+	log.Println("message is sent")
 }
 
 func (c *Commander) HandleUpdate(update tgbotapi.Update) {
